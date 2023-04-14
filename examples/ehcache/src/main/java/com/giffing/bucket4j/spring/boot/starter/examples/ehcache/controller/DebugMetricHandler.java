@@ -21,7 +21,8 @@ public class DebugMetricHandler implements MetricHandler {
 					.stream()
 					.map(mtr -> mtr.getKey() + ":" + mtr.getValue())
 					.collect(Collectors.joining(","))));
-		
+
+
 	}
 
 }

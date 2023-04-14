@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 management:
   endpoints:
     web:
@@ -9,46 +12,91 @@ spring:
   cache:
     jcache:
       config: classpath:ehcache.xml
+#bucket4j:
+#  enabled: true
+#  filters:
+#  - cache-name: buckets
+#    filter-method: servlet
+#    filter-order: -200
+#    http-content-type: application/json;charset=UTF-8
+#    url: .*
+#    metrics:
+#      tags:
+#      - key: IP
+#        expression: getRemoteAddr()
+#        types: REJECTED_COUNTER
+#    rate-limits:
+#    - bandwidths:
+#      - capacity: 5
+#        time: 1
+#        unit: minutes
+
 bucket4j:
   enabled: true
   filters:
-  - cache-name: buckets
-    filter-method: servlet
-    filter-order: -200
-    http-content-type: application/json;charset=UTF-8
-    url: .*
-    metrics:
-      tags:
-      - key: USERNAME
-        expression: "@securityService.username() != null ? @securityService.username() : 'anonym'"
-      - key: URL
-        expression: getRequestURI()
-    rate-limits:
-    - bandwidths:
-      - capacity: 30
-        time: 1
-        unit: minutes
-  - cache-name: buckets   
-    filter-method: servlet
-    filter-order: 1
-    http-content-type: application/json;charset=UTF-8
-    url: .*
-    metrics:
-      tags:
-        - key: USERNAME
-          expression: "@securityService.username() != null ? @securityService.username() : 'anonym'"
-        - key: URL
-          expression: getRequestURI()
-    rate-limits:
-    - execute-condition:  "@securityService.username() == 'admin'"
-      cache-key: "@securityService.username()?: getRemoteAddr()"
-      bandwidths:
-      - capacity: 30
-        time: 1
-        unit: minutes
-    - execute-condition: "@securityService.username() != 'admin'"
-      cache-key: "@securityService.username()?: getRemoteAddr()"
-      bandwidths:
-      - capacity: 5
-        time: 1
-        unit: minutes
+    - cache-name: buckets
+      filter-method: servlet
+      url: .*
+      metrics:
+        tags:
+          - key: IP
+            expression: getRemoteAddr()
+            types: REJECTED_COUNTER
+      rate-limits:
+#        - execute-condition: "@securityService.username() == ''"
+#          cache-key: "@securityService.username()"
+#          bandwidths:
+#            - capacity: 5
+#              time: 1
+#              unit: minutes
+#        - execute-condition: "@securityService.username() == 'user'"
+#          cache-key: "@securityService.username()"
+#          bandwidths:
+#            - capacity: 10
+#              time: 1
+#              unit: minutes
+#        - execute-condition:  "@securityService.username() == 'admin'"
+#          cache-key: "@securityService.username()"
+#          bandwidths:
+#            - capacity: 20
+#              time: 1
+#              unit: minutes
+
+#        - execute-condition: "@securityService.username() == ''"
+        - cache-key: getRemoteAddr()
+          bandwidths:
+            - capacity: 5
+              time: 1
+              unit: minutes
+
+
+
+
+
+
+
+
+#  - cache-name: buckets
+#    filter-method: servlet
+#    filter-order: 1
+#    http-content-type: application/json;charset=UTF-8
+#    url: .*
+#    metrics:
+#      tags:
+#        - key: USERNAME
+#          expression: "@securityService.username() != null ? @securityService.username() : 'anonym'"
+#        - key: URL
+#          expression: getRequestURI()
+#    rate-limits:
+#    - execute-condition:  "@securityService.username() == 'admin'"
+#      cache-key: "@securityService.username()?: getRemoteAddr()"
+#      bandwidths:
+#      - capacity: 30
+#        time: 1
+#        unit: minutes
+#    - execute-condition: "@securityService.username() != 'admin'"
+#      cache-key: "@securityService.username()?: getRemoteAddr()"
+#      bandwidths:
+#      - capacity: 5
+#        time: 1
+#        unit: minutes

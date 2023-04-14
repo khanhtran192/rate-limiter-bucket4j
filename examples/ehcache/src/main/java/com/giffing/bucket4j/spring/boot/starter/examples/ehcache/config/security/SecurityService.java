@@ -6,19 +6,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value = "securityService")
 public class SecurityService {
 
 	public String username() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null) {
-			return null;
-		}
-		String name = authentication.getName();
-		if(Objects.equals(name, "anonymousUser")) {
-			return null;
-		}
-		return name;
+		return "";
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if(authentication == null) {
+//			return "";
+//		}
+//		String name = authentication.getName();
+//		if(Objects.equals(name, "anonymousUser")) {
+//			return "";
+//		}
+//		return name;
 	}
+//	public String notSignedIn(){
+//		return "anonymousUser";
+//	}
 	
 }
